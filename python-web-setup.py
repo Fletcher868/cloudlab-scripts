@@ -1,24 +1,16 @@
 #!/bin/bash
-# python-web-setup.sh
+# This script runs in the Colab environment.
+# It must start the application on the given port and then exit (or run in background).
 
-set -e  # exit on error
-
-PORT=${APP_PORT:-8000}
-echo "🚀 Setting up Python Web Lab on port $PORT"
-
-# Create a sample index.html
+echo "🚀 Starting Python HTTP server on port 8000..."
 cat > index.html <<EOF
-<!DOCTYPE html>
-<html>
-<head><title>CloudLab Python Server</title></head>
-<body>
-<h1>CloudLab Python Web Lab is running!</h1>
-<p>Your private tunnel will be ready in a moment.</p>
-</body>
-</html>
+<h1>CloudLab Python Server Live!</h1>
+<p>Your private lab is ready.</p>
 EOF
 
-# Start Python HTTP server in background
-python3 -m http.server $PORT > app.log 2>&1 &
+# Run the server in the background
+python3 -m http.server 8000 > app.log 2>&1 &
 
-echo "✅ Python server started (PID $!)"
+# Give it a moment to bind
+sleep 2
+echo "✅ Server started"

@@ -1,19 +1,24 @@
-print("🚀 Starting Python HTTP server...")
+#!/bin/bash
+# python-web-setup.sh
 
-# Create a simple index.html
-with open("index.html", "w") as f:
-    f.write("""
-    <html>
-        <head><title>CloudLab Python Server</title></head>
-        <body>
-            <h1>✅ Your Python Web Lab is running!</h1>
-            <p>This is a private instance.</p>
-        </body>
-    </html>
-    """)
+set -e  # exit on error
 
-# Function to run the server
-def run_server():
-    os.system("python3 -m http.server 8000 > server.log 2>&1")
+PORT=${APP_PORT:-8000}
+echo "🚀 Setting up Python Web Lab on port $PORT"
 
-threading.Thread(target=run_server, daemon=True).start()
+# Create a sample index.html
+cat > index.html <<EOF
+<!DOCTYPE html>
+<html>
+<head><title>CloudLab Python Server</title></head>
+<body>
+<h1>CloudLab Python Web Lab is running!</h1>
+<p>Your private tunnel will be ready in a moment.</p>
+</body>
+</html>
+EOF
+
+# Start Python HTTP server in background
+python3 -m http.server $PORT > app.log 2>&1 &
+
+echo "✅ Python server started (PID $!)"
